@@ -31,7 +31,7 @@ app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
 
 // Products Express Router
-app.use("/products", prodsRouter);
+app.use("products", prodsRouter);
 app.get('/', (req, res) => {
     res.send({txt: "hello world"});
 })
