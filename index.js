@@ -36,6 +36,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Products Express Router
 app.use("/products", prodsRouter);
+app.get('/', (req, res) => {
+    console.log(req.body);
+    res.send({txt: "hello world"});
+})
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT} for requests`);
