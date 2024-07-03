@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Define allowed origins
-const allowedOrigins = ["https://itsalivenger.github.io", "http://127.0.0.1:5500"];
+const allowedOrigins = ["https://itsalivenger.github.io/*", "http://127.0.0.1:5500"];
 
 // CORS configuration
 app.use(cors({
