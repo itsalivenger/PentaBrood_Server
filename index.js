@@ -21,7 +21,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "https://itsalivenger.github.io/PentaBrood",
+    origin: "https://itsalivenger.github.io",
     credentials: true,
   })
 );
