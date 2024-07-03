@@ -7,11 +7,17 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 app.use(cors({
-  origin: ["https://itsalivenger.github.io/", "http://127.0.0.1:5500/"],
+  origin: ["https://itsalivenger.github.io", "http://127.0.0.1:5500"],
   credentials: true,
 }));
 
-// Correcting middleware definition to include req, res, and next
+// Handle preflight OPTIONS requests
+app.options('*', cors({
+  origin: ["https://itsalivenger.github.io", "http://127.0.0.1:5500"],
+  credentials: true,
+}));
+
+// Middleware to include db
 app.use((req, res, next) => {
   req.db = db;
   next();
