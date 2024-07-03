@@ -44,13 +44,14 @@ router.delete("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const collection = req.db.collection("Products");
-  console.log('got a get request to /products to get all products');
-  let arr = await collection
-    .find()
-    .toArray();
-    console.log(arr);
-  res.send(arr);
+  // const collection = req.db.collection("Products");
+  // console.log('got a get request to /products to get all products');
+  // let arr = await collection
+  //   .find()
+  //   .toArray();
+  //   console.log(arr);
+  // res.send(arr);
+  res.send({ txt: "got a get request to /products to get all products" });
 })
 
 router.get("/:filter", async (req, res) => {
