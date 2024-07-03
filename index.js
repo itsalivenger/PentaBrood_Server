@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Products Express Router
 app.use("products", prodsRouter);
-app.get('/', (req, res) => {
+app.get('/products', (req, res) => {
     res.send({txt: "hello world"});
 })
 
