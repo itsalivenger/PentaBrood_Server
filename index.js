@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 app.use(cors({
-  origin: "https://itsalivenger.github.io",
+  origin: ["https://itsalivenger.github.io", "http://127.0.0.1:5500"],
   credentials: true,
 }));
 
