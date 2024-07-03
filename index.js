@@ -21,6 +21,13 @@ app.use(cors({
 }));
 
 // Handle preflight OPTIONS requests
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
+
+// Handle preflight OPTIONS requests
 app.options('*', cors({
   origin: (origin, callback) => {
     if (allowedOrigins.includes(origin)) {
