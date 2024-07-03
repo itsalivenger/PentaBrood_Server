@@ -68,10 +68,10 @@ router.delete("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     console.log("Received GET request to fetch all products");
-    let collection = req.db.collection("Products");
+    // let collection = req.db.collection("Products");
 
-    let products = await collection.find().toArray();
-    res.status(200).send(products);
+    // let products = await collection.find().toArray();
+    res.status(200).send({txt: "Products fetched successfully"});
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send({ txt: "Failed to fetch products" });
