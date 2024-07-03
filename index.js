@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Define allowed origins
-const allowedOrigins = ["https://itsalivenger.github.io/products", "http://127.0.0.1:5500"];
+const allowedOrigins = ["https://itsalivenger.github.io", "http://127.0.0.1:5500"];
 
 // CORS configuration
 app.use(cors({
@@ -31,22 +31,15 @@ app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
 
 // Products Express Router
-app.use("products", prodsRouter);
-app.get('/products', (req, res) => {
-    res.send({txt: "hello world"});
-})
+app.use("/products", prodsRouter);
+
+// Root route
+app.get('/', (req, res) => {
+  res.send({txt: "Hello world"});
+});
 
 // Handle preflight OPTIONS requests
-app.options('*', cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-}));
+app.options('*', cors());
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT} for requests`);

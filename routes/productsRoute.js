@@ -1,91 +1,111 @@
 let router = require("express").Router();
 
+// Add Product
 router.post("/", async (req, res) => {
-  console.log("got request in the /products to add a product");
-  let product = req.body;
-  
-  let collection = req.db.collection("Products");
+  try {
+    console.log("Received POST request to add a product");
+    let product = req.body;
+    let collection = req.db.collection("Products");
 
-  // check if the product already exists
-  let exists = await collection.findOne({ prodName: product.prodName });
-  if (exists) {
-    res.send({ txt: "product already exists" });
-  } else {
-    collection.insertOne(product, (err, result) => {
-      if (err){
-        res.send({ txt: "failed to add product" });
-      } else {
-        res.send({ txt: "added product successfully", res: req.body });
-      }
-    });
+    // Check if the product already exists
+    let exists = await collection.findOne({ prodName: product.prodName });
+    if (exists) {
+      res.status(409).send({ txt: "Product already exists" });
+    } else {
+      await collection.insertOne(product);
+      res.status(201).send({ txt: "Product added successfully", product });
+    }
+  } catch (error) {
+    console.error("Error adding product:", error);
+    res.status(500).send({ txt: "Failed to add product" });
   }
-  exists = {};
 });
 
+// Update Product
 router.put("/", async (req, res) => {
-  let { newProduct, oldProduct } = req.body;
-  console.log("got request in /products with a Put request");
-  let collection = req.db.collection("Products");
-  let result = await collection.findOneAndUpdate(
-    { prodName: oldProduct.prodName },
-    { $set: newProduct }
-  );
-  // console.log(result);
-  res.send({ txt: "updated product successfully", res: req.body });
+  try {
+    let { newProduct, oldProduct } = req.body;
+    console.log("Received PUT request to update a product");
+    let collection = req.db.collection("Products");
+
+    let result = await collection.findOneAndUpdate(
+      { prodName: oldProduct.prodName },
+      { $set: newProduct }
+    );
+
+    if (result.value) {
+      res.status(200).send({ txt: "Product updated successfully", newProduct });
+    } else {
+      res.status(404).send({ txt: "Product not found" });
+    }
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).send({ txt: "Failed to update product" });
+  }
 });
 
+// Delete Product
 router.delete("/", async (req, res) => {
-  let prod = req.body;
-  console.log("got a delete request");
-  let collection = req.db.collection("Products");
-  let result = await collection.findOneAndDelete({ prodName: prod.prodName });
-  console.log(result);
-  res.send({ txt: "was sent successfully", result });
+  try {
+    let prod = req.body;
+    console.log("Received DELETE request to delete a product");
+    let collection = req.db.collection("Products");
+
+    let result = await collection.findOneAndDelete({ prodName: prod.prodName });
+
+    if (result.value) {
+      res.status(200).send({ txt: "Product deleted successfully", result });
+    } else {
+      res.status(404).send({ txt: "Product not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).send({ txt: "Failed to delete product" });
+  }
 });
 
+// Get All Products
 router.get("/", async (req, res) => {
-  // const collection = req.db.collection("Products");
-  // console.log('got a get request to /products to get all products');
-  // let arr = await collection
-  //   .find()
-  //   .toArray();
-  //   console.log(arr);
-  // res.send(arr);
-  res.send({ txt: "got a get request to /products to get all products" });
-})
+  try {
+    console.log("Received GET request to fetch all products");
+    let collection = req.db.collection("Products");
 
+    let products = await collection.find().toArray();
+    res.status(200).send(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).send({ txt: "Failed to fetch products" });
+  }
+});
+
+// Get Filtered Products
 router.get("/:filter", async (req, res) => {
-    console.log("got a get request to /products to get all products");
+  try {
+    console.log("Received GET request to fetch filtered products");
     let { searchVal, maxVal, minVal, types = [] } = JSON.parse(req.params.filter);
     let query = {};
-  
-  
-    if(searchVal){
-      query.prodName = new RegExp(searchVal, "i")
+
+    if (searchVal) {
+      query.prodName = new RegExp(searchVal, "i");
     }
-    if(maxVal){
-      query.prodPrice = {
-        $lte: parseInt(maxVal)
-      }
+    if (maxVal) {
+      query.prodPrice = { $lte: parseInt(maxVal) };
     }
-    if(minVal){
-      query.prodPrice = {
-        ...query.prodPrice,
-        $gte: parseInt(minVal)
-      }
+    if (minVal) {
+      query.prodPrice = { ...query.prodPrice, $gte: parseInt(minVal) };
     }
-    if(types.length){
-      query.prodType = {
-        $in: types
-      }
+    if (types.length) {
+      query.prodType = { $in: types };
     }
+
     console.log(query);
     let collection = req.db.collection("Products");
-    let arr = await collection
-      .find(query)
-      .toArray();
-    console.log(arr);
-    res.send(arr);
-  });
+    let products = await collection.find(query).toArray();
+    res.status(200).send(products);
+  } catch (error) {
+    console.error("Error fetching filtered products:", error);
+    res.status(500).send({ txt: "Failed to fetch products" });
+  }
+});
 
 module.exports = router;
