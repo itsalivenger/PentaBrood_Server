@@ -8,7 +8,7 @@ router.post("/", async (req, res) => {
     let collection = req.db.collection("Products");
 
     // Check if the product already exists
-    let exists = await collection.findOne({ prodName: product.prodName });
+    let exists = await collection.findOne({ name: product.name });
     if (exists) {
       res.status(409).send({ txt: "Product already exists" });
     } else {
