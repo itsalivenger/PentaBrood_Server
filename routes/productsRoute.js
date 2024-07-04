@@ -71,7 +71,7 @@ router.get("/", async (req, res) => {
     let collection = req.db.collection("Products");
 
     let products = await collection.find().toArray();
-    res.status(200).send({txt: "Products fetched successfully"});
+    res.status(200).send({txt: "Products fetched successfully", products});
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send({ txt: "Failed to fetch products"});
