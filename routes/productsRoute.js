@@ -1,4 +1,5 @@
 let router = require("express").Router();
+let ObjectId = require("mongodb").ObjectId;
 
 // Add Product
 router.post("/", async (req, res) => {
@@ -65,7 +66,7 @@ router.delete("/", async (req, res) => {
 });
 
 // Get All Products
-router.get("/", async (req, res) => {
+router.get("/shop", async (req, res) => {
   try {
     console.log("Received GET request to fetch all products");
     let collection = req.db.collection("Products");
@@ -76,6 +77,13 @@ router.get("/", async (req, res) => {
     console.error("Error fetching products:", error);
     res.status(500).send({ txt: "Failed to fetch products"});
   }
+});
+
+router.get("/", async (req, res) => {
+  let _id = new ObjectId(req.query.id);
+  let collection = req.db.collection("Products");
+  let prod = await collection.findOne({ _id });
+  res.send(prod);
 });
 
 // Get Filtered Products
