@@ -67,6 +67,7 @@ router.delete("/", async (req, res) => {
 
 // Get All Products
 router.get("/shop", async (req, res) => {
+  console.log('khooya finha l GET request');
   try {
     console.log("Received GET request to fetch all products");
     let collection = req.db.collection("Products");
