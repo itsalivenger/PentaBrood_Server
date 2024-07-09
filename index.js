@@ -1,7 +1,9 @@
+require('dotenv').config()
 const express = require("express");
 const cors = require("cors");
 const db = require("./dbConnextion");
 const prodsRouter = require("./routes/productsRoute");
+const checkoutRouter = require("./routes/checkoutRoute");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -33,10 +35,14 @@ app.use(express.urlencoded({ extended: true }));
 // Products Express Router
 app.use("/products", prodsRouter);
 
+// Checkout Express Router
+app.use("/checkout", checkoutRouter);
+
 // Root route
 app.get('/', (req, res) => {
   res.send({txt: "Hello world"});
 });
+
 
 // Handle preflight OPTIONS requests
 app.options('*', cors());
