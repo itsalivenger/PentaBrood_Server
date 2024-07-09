@@ -43,8 +43,8 @@ router.post('/', async (req, res) => {
             line_items,
             payment_method_types: ['card'],
             mode: 'payment',
-            success_url: `${process.env.FRONTEND_URL}/thankyou.html`,
-            cancel_url: `${process.env.FRONTEND_URL}/cancel.html`
+            success_url: `${process.env.FRONTEND_URL}/PentaBrood/thankyou.html`,
+            cancel_url: `${process.env.FRONTEND_URL}/PentaBrood/cancel.html`
         })
         res.send({session, line_items})
     } catch (error) {
