@@ -1,6 +1,7 @@
 const router = require('express').Router();
+const stripe = require('stripe');
 
-router.get('/success', async (req, res) => {
+router.get('/', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
     const customer = await stripe.customers.retrieve(session.customer);
 
