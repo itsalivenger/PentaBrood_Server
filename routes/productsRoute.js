@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
     }
   } catch (error) {
     console.error("Error adding product:", error);
-    res.status(500).send({ txt: "Failed to add product" });
+    res.status(500).send({ txt: "Failed to add product", error });
   }
 });
 

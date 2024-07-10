@@ -9,7 +9,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     // res.send({tst: req.body});
-    const { cart } = req.body;
+    const { cart, user } = req.body;
+    addUserToDb(user);
     const productIds = cart.map(item => new mongoose.Types.ObjectId(item._id));
     const collection = req.db.collection('Products');
     let line_items = [];
@@ -51,5 +52,9 @@ router.post('/', async (req, res) => {
         res.status(500).send({error: error.message});
     }
 });
+
+function addUserToDb(user) {
+    console.log(user);
+}
 
 module.exports = router
