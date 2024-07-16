@@ -5,6 +5,7 @@ const db = require("./dbConnextion");
 const prodsRouter = require("./routes/productsRoute");
 const checkoutRouter = require("./routes/checkoutRoute");
 const successRouter = require("./routes/successRoute");
+const homeRouter = require("./routes/homeRoute");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -43,9 +44,8 @@ app.use("/checkout", checkoutRouter);
 app.use("/success", successRouter);
 
 // Root route
-app.get('/', (req, res) => {
-  res.send({txt: "Hello world"});
-});
+app.use('/', homeRouter);
+
 
 // Handle preflight OPTIONS requests
 app.options('*', cors());

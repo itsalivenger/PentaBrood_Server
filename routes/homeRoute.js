@@ -9,3 +9,5 @@ router.get('/', (req, res) => {
     }
     res.send({testps: `wslat l3iba f j3iba ${req.body}`});
 });
+
+module.exports = router
