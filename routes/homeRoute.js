@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
         const email = req.body.email;
         console.log(email);
     }
-    res.send({testps: `wslat l3iba f j3iba ${req.body}`});
+    res.send({testps: `wslat l3iba f j3iba`});
 });
 
 module.exports = router
