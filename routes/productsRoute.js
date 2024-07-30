@@ -83,18 +83,39 @@ router.get("/shop", async (req, res) => {
 router.get("/popularAndRated", async (req, res) => {
   console.log("Received GET request to fetch popular and rated products");
   try {
-    let collection = req.db.collection("Products");
-    // let products = await collection
-    //   .find()
-    //   .limit(12)
-    //   .toArray();
-    res.status(200).send({ txt: "Products fetched successfully"});
+    // Ensure that req.db is properly initialized and connected
+    if (!req.db) {
+      throw new Error("Database connection not found");
+    }
+
+    const collection = req.db.collection("Products");
+
+    // Fetch popular products
+    const popularProducts = await collection
+      .find() // Example filter to fetch popular products
+      .limit(12)
+      .toArray();
+
+    // Fetch rated products
+    const ratedProducts = await collection
+      .find() // Example filter to fetch rated products
+      .limit(12)
+      .toArray();
+
+    res.status(200).send({
+      txt: "Products fetched successfully",
+      products: {
+        popular: popularProducts,
+        rated: ratedProducts
+      }
+    });
 
   } catch (err) {
     console.error("Error fetching products:", err);
     res.status(500).send({ txt: "Failed to fetch products" });
   }
 });
+
 
 router.get("/", async (req, res) => {
   let _id = new ObjectId(req.query.id);
