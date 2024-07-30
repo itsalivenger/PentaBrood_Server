@@ -82,18 +82,19 @@ router.get("/shop", async (req, res) => {
 
 router.get("/popularAndRated", async (req, res) => {
   console.log("Received GET request to fetch popular and rated products");
-  try {
-    let collection = req.db.collection("Products");
-    let products = await collection
-      .find()
-      .limit(12)
-      .toArray();
-    res.status(200).send({ txt: "Products fetched successfully", products: { popular: products, rated: products } });
+  res.send({txt: 'khooya finha l GET request'});
+  // try {
+  //   let collection = req.db.collection("Products");
+  //   let products = await collection
+  //     .find()
+  //     .limit(12)
+  //     .toArray();
+  //   res.status(200).send({ txt: "Products fetched successfully", products: { popular: products, rated: products } });
 
-  } catch (err) {
-    console.error("Error fetching products:", err);
-    res.status(500).send({ txt: "Failed to fetch products" });
-  }
+  // } catch (err) {
+  //   console.error("Error fetching products:", err);
+  //   res.status(500).send({ txt: "Failed to fetch products" });
+  // }
 });
 
 router.get("/", async (req, res) => {
